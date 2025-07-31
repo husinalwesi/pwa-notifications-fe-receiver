@@ -12,6 +12,8 @@ if ('serviceWorker' in navigator) {
 
 }
 
+fetchLatestNotifications();
+
 async function fetchLatestNotifications() {
     try {
         const response = await fetch('https://pwa-notifications-be.onrender.com/notifications'); // adjust your endpoint
@@ -38,6 +40,12 @@ subscribe();
 
 async function subscribe() {
     const permission = await Notification.requestPermission();
+
+    if (permission === 'granted') {
+        const subscribeEle = document.getElementById("subscribe");
+        if (subscribeEle) subscribeEle.remove();
+    }
+
     if (permission !== 'granted') {
         return console.log('Notification permission denied');
     }
