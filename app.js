@@ -3,12 +3,13 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js')
         .then(() => console.log('Service Worker registered'));
 }
-
+subscribe();
 // Ask permission and subscribe
-document.getElementById('subscribe').addEventListener('click', async () => {
+
+async function subscribe() {
     const permission = await Notification.requestPermission();
     if (permission !== 'granted') {
-        return alert('Notification permission denied');
+        return console.log('Notification permission denied');
     }
 
     const swReg = await navigator.serviceWorker.ready;
@@ -28,9 +29,30 @@ document.getElementById('subscribe').addEventListener('click', async () => {
         }
     });
 
-    alert('Subscribed!');
-});
+    console.log('Subscribed!');
+}
 
+function pushNotification(title, body) {
+    fetch("https://pwa-notifications-be.onrender.com/sendNotification", {
+        method: "POST",
+        body: JSON.stringify({
+            title: title,
+            body: body,
+        }),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((response) =>
+            response.ok
+                ? console.log("Notification sent!")
+                : console.log("Failed to send")
+        )
+        .catch((error) => {
+            console.error("Error sending notification:", error);
+            console.log("Error sending notification");
+        });
+}
 
 function urlBase64ToUint8Array(base64String) {
     const padding = '='.repeat((4 - base64String.length % 4) % 4);
