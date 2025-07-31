@@ -2,7 +2,37 @@
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js')
         .then(() => console.log('Service Worker registered'));
+
+    navigator.serviceWorker.addEventListener('message', event => {
+        if (event.data?.type === 'NEW_PUSH_RECEIVED') {
+            // Call your API to get the latest notifications
+            fetchLatestNotifications();
+        }
+    });
+
 }
+
+async function fetchLatestNotifications() {
+    try {
+        const response = await fetch('https://pwa-notifications-be.onrender.com/notifications'); // adjust your endpoint
+        const data = await response.json();
+        updateNotificationUI(data); // render to DOM or state
+    } catch (err) {
+        console.error('Error fetching notifications:', err);
+    }
+}
+
+function updateNotificationUI(notifications) {
+    const list = document.getElementById('notification-list');
+    list.innerHTML = ''; // Clear existing items
+
+    notifications.forEach(notification => {
+        const li = document.createElement('li');
+        li.textContent = `${notification.title}: ${notification.body}`;
+        list.appendChild(li);
+    });
+}
+
 subscribe();
 // Ask permission and subscribe
 

@@ -14,4 +14,12 @@ self.addEventListener('push', function (event) {
             icon: 'icon.png'
         })
     );
+
+    // Send a message to the client
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function (clients) {
+        for (const client of clients) {
+            client.postMessage({ type: 'NEW_PUSH_RECEIVED', payload: data });
+        }
+    });
+
 });
