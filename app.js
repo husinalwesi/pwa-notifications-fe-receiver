@@ -30,8 +30,18 @@ function updateNotificationUI(notifications) {
 
     notifications.forEach(notification => {
         const li = document.createElement('li');
-        li.textContent = `<p class='font-bold margin-y-0'>${notification.title}</p>: ${notification.body}`;
-        list.appendChild(li);
+
+        const p = document.createElement('p');
+        p.className = 'font-bold margin-y-0'; // add classes
+        p.textContent = notification.title;   // set text inside <p>
+
+        li.appendChild(p);                    // add <p> to <li>
+
+        // Optionally add the body text after the <p> tag
+        const bodyText = document.createTextNode(`: ${notification.body}`);
+        li.appendChild(bodyText);            // add body text after <p>
+
+        list.appendChild(li);                // add <li> to the list
     });
 }
 
