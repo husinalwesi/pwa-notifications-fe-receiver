@@ -24,6 +24,10 @@ async function fetchLatestNotifications() {
     }
 }
 
+// setTimeout(() => {
+//     updateNotificationUI([{ title: 'title', body: 'test', timestamp: new Date() }]);
+// }, 3000);
+
 function updateNotificationUI(notifications) {
     const list = document.getElementById('notification-list');
     list.innerHTML = ''; // Clear existing items
@@ -31,19 +35,29 @@ function updateNotificationUI(notifications) {
     notifications.forEach(notification => {
         const li = document.createElement('li');
 
-        const p = document.createElement('p');
-        p.className = 'notification-title'; // add classes
-        p.textContent = notification.title;   // set text inside <p>
+        // Title
+        const title = document.createElement('p');
+        title.className = 'notification-title poppins-medium';
+        title.textContent = notification.title;
+        li.appendChild(title);
 
-        li.appendChild(p);                    // add <p> to <li>
+        // Body
+        const body = document.createElement('p');
+        body.className = 'notification-body';
+        body.textContent = notification.body;
+        li.appendChild(body);
 
-        // Optionally add the body text after the <p> tag
-        const bodyText = document.createTextNode(`${notification.body}`);
-        li.appendChild(bodyText);            // add body text after <p>
+        // Date and time
+        const dateTime = document.createElement('p');
+        dateTime.className = 'notification-date';
+        const date = new Date(notification.timestamp);
+        dateTime.textContent = date.toLocaleString(); // e.g., "8/4/2025, 10:15:00 AM"
+        li.appendChild(dateTime);
 
-        list.appendChild(li);                // add <li> to the list
+        list.appendChild(li);
     });
 }
+
 
 subscribe();
 // Ask permission and subscribe

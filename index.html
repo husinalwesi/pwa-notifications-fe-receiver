@@ -6,8 +6,124 @@
     <title>PWA Notification</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="manifest" href="manifest.json" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
     <script src="app.js"></script>
     <style>
+      /* .poppins-thin {
+        font-family: "Poppins", sans-serif;
+        font-weight: 100;
+        font-style: normal;
+      }
+
+      .poppins-extralight {
+        font-family: "Poppins", sans-serif;
+        font-weight: 200;
+        font-style: normal;
+      }
+
+      .poppins-light {
+        font-family: "Poppins", sans-serif;
+        font-weight: 300;
+        font-style: normal;
+      } */
+
+      .poppins-regular {
+        font-family: "Poppins", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      .poppins-medium {
+        font-family: "Poppins", sans-serif;
+        font-weight: 500;
+        font-style: normal;
+      }
+
+      /* .poppins-semibold {
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        font-style: normal;
+      }       */
+
+      /*
+
+      .poppins-bold {
+        font-family: "Poppins", sans-serif;
+        font-weight: 700;
+        font-style: normal;
+      }
+
+      .poppins-extrabold {
+        font-family: "Poppins", sans-serif;
+        font-weight: 800;
+        font-style: normal;
+      }
+
+      .poppins-black {
+        font-family: "Poppins", sans-serif;
+        font-weight: 900;
+        font-style: normal;
+      }
+
+      .poppins-thin-italic {
+        font-family: "Poppins", sans-serif;
+        font-weight: 100;
+        font-style: italic;
+      }
+
+      .poppins-extralight-italic {
+        font-family: "Poppins", sans-serif;
+        font-weight: 200;
+        font-style: italic;
+      }
+
+      .poppins-light-italic {
+        font-family: "Poppins", sans-serif;
+        font-weight: 300;
+        font-style: italic;
+      }
+
+      .poppins-regular-italic {
+        font-family: "Poppins", sans-serif;
+        font-weight: 400;
+        font-style: italic;
+      }
+
+      .poppins-medium-italic {
+        font-family: "Poppins", sans-serif;
+        font-weight: 500;
+        font-style: italic;
+      }
+
+      .poppins-semibold-italic {
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        font-style: italic;
+      }
+
+      .poppins-bold-italic {
+        font-family: "Poppins", sans-serif;
+        font-weight: 700;
+        font-style: italic;
+      }
+
+      .poppins-extrabold-italic {
+        font-family: "Poppins", sans-serif;
+        font-weight: 800;
+        font-style: italic;
+      }
+
+      .poppins-black-italic {
+        font-family: "Poppins", sans-serif;
+        font-weight: 900;
+        font-style: italic;
+      } */
+
       ul {
         list-style: none;
         padding: 0;
@@ -22,25 +138,52 @@
         padding: 8px 16px;
         border-radius: 4px;
       }
-      .notification-title{
+      .notification-title {
         font-weight: bold;
         margin-top: 0;
         margin-bottom: 0;
       }
+      .notification-body {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      .notification-date {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      @media screen and (max-width: 768px) {
+        #ihorizons-logo {
+          max-width: 150px !important;
+        }
+        #peopleDynamics-logo {
+          max-width: 110px !important;
+        }
+      }
+      @media screen and (max-width: 400px) {
+        #logos-container {
+          flex-direction: column;
+        }
+      }
     </style>
   </head>
   <body
-    style="margin: 0; display: flex; justify-content: center; min-height: 100vh"
+    style="
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      background-image: url('bg.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+    "
   >
     <div
       style="
         padding-left: 32px;
         padding-right: 32px;
         padding-top: 46px;
-        width: 834px;
-        background-image: url('bg.png');
-        background-size: cover;
-        background-repeat: no-repeat;
+        max-width: 834px;
+        width: 100%;
       "
     >
       <div
@@ -48,17 +191,26 @@
           display: flex;
           justify-content: space-between;
           align-items: center;
+          gap: 1rem;
         "
+        id="logos-container"
       >
-        <img src="ihorizons.png" style="height: 44px; width: auto" alt="" />
         <img
+          id="ihorizons-logo"
+          src="ihorizons.png"
+          style="max-height: 44px; width: 100%; height: auto; max-width: 278px"
+          alt=""
+        />
+        <img
+          id="peopleDynamics-logo"
           src="peopleDynamics.png"
-          style="height: 44px; width: auto"
+          style="max-height: 44px; width: 100%; height: auto; max-width: 162px"
           alt=""
         />
       </div>
 
       <button
+        class="poppins-regular"
         style="
           border: 0;
           border-radius: 4px;
@@ -71,7 +223,7 @@
       </button>
       <!-- <button id="sendNotification">Send Notification</button> -->
 
-      <ul id="notification-list"></ul>
+      <ul id="notification-list" class="poppins-regular"></ul>
       <!-- <ul id="notification-list">
         <li>Hello!: This is your first push notification 🎉</li>
         <li>Hello!: This is your first push notification 🎉</li>
