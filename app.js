@@ -16,7 +16,8 @@ fetchLatestNotifications();
 
 async function fetchLatestNotifications() {
     try {
-        const response = await fetch('https://pwa-notifications-be.onrender.com/notifications'); // adjust your endpoint
+        // const response = await fetch('https://pwa-notifications-be.onrender.com/notifications'); // adjust your endpoint
+        const response = await fetch('https://doorapp.ihorizons.org/backend/notifications'); // adjust your endpoint
         const data = await response.json();
         updateNotificationUI(data); // render to DOM or state
     } catch (err) {
@@ -83,7 +84,9 @@ async function subscribe() {
         applicationServerKey: applicationServerKey
     });
 
-    await fetch('https://pwa-notifications-be.onrender.com/subscribe', {
+
+    // await fetch('https://pwa-notifications-be.onrender.com/subscribe', {
+    await fetch('https://doorapp.ihorizons.org/backend/subscribe', {
         method: 'POST',
         body: JSON.stringify(subscription),
         headers: {
@@ -95,7 +98,8 @@ async function subscribe() {
 }
 
 function pushNotification(title, body) {
-    fetch("https://pwa-notifications-be.onrender.com/sendNotification", {
+    fetch("https://doorapp.ihorizons.org/backend/sendNotification", {
+    // fetch("https://pwa-notifications-be.onrender.com/sendNotification", {
         method: "POST",
         body: JSON.stringify({
             title: title,
