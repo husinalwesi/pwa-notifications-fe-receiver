@@ -1,6 +1,6 @@
 {
-    "name": "PWA Push Demo",
-    "short_name": "PushDemo",
+    "name": "IHorizons Door App",
+    "short_name": "IHorizons Door",
     "start_url": "./",
     "display": "standalone",
     "background_color": "#ffffff",
