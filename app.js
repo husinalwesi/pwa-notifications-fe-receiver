@@ -87,12 +87,12 @@ function updateNotificationUI(notifications) {
 function selectPurpose(purpose) {
     console.log(purpose);
     document.querySelector(".main-links").remove();
-    subscribe(currentTeam);
+    subscribe(currentTeam, purpose);
 }
 
 // Ask permission and subscribe
 
-async function subscribe(team) {
+async function subscribe(team, innerteam) {
     const permission = await Notification.requestPermission();
 
     if (permission === 'granted') {
@@ -117,7 +117,8 @@ async function subscribe(team) {
 
     const payload = {
         subscription,
-        team: team
+        team: team,
+        innerteam: innerteam
     };
 
     const response = await fetch(`${baseURL}/subscribe`, {
