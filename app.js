@@ -18,7 +18,22 @@ async function initialize() {
         const subscription = await reg.pushManager.getSubscription();
 
         if (subscription) {
-            console.log("✅ User is already subscribed:", subscription);
+            // console.log("✅ User is already subscribed:", subscription);
+
+            const response = await fetch(`${baseURL}/getmysubscribtion`, {
+                method: 'POST',
+                body: JSON.stringify(subscription),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const res = await response.json();
+            console.log('from the api::');
+
+            console.log(res);
+
+
             // return true;
         } else {
             console.log("❌ User is not subscribed yet");
