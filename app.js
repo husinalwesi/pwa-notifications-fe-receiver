@@ -1,23 +1,48 @@
 // Register service worker
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js')
-        .then(() => console.log('Service Worker registered'));
+// console.log(currentTeam);
+var innerTeam = "";
+// subscribe(currentTeam);
 
-    navigator.serviceWorker.addEventListener('message', event => {
-        if (event.data?.type === 'NEW_PUSH_RECEIVED') {
-            // Call your API to get the latest notifications
-            fetchLatestNotifications();
+var baseURL = "https://pwa-notifications-be.onrender.com";
+// var baseURL = "https://doorapp.ihorizons.org/backend";
+
+initialize();
+async function initialize() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register(currentTeam === 'peopledynamics' ? 'sw-people.js' : 'sw.js')
+            .then(() => console.log('Service Worker registered'));
+
+
+        // check if user is already subscribed or not
+        const reg = await navigator.serviceWorker.ready;
+        const subscription = await reg.pushManager.getSubscription();
+
+        if (subscription) {
+            console.log("✅ User is already subscribed:", subscription);
+            // return true;
+        } else {
+            console.log("❌ User is not subscribed yet");
+            // return false;
         }
-    });
 
+
+
+
+        navigator.serviceWorker.addEventListener('message', event => {
+            if (event.data?.type === 'NEW_PUSH_RECEIVED') {
+                // Call your API to get the latest notifications
+                fetchLatestNotifications();
+            }
+        });
+
+    }
 }
 
-fetchLatestNotifications();
-
 async function fetchLatestNotifications() {
+    if (!innerTeam) return;
     try {
-        // const response = await fetch('https://pwa-notifications-be.onrender.com/notifications'); // adjust your endpoint
-        const response = await fetch('https://doorapp.ihorizons.org/backend/notifications'); // adjust your endpoint
+        // use this innerTeam
+        const response = await fetch(`${baseURL}/notifications?team=${currentTeam}&innerTeam=${innerTeam}`); // adjust your endpoint
         const data = await response.json();
         updateNotificationUI(data); // render to DOM or state
     } catch (err) {
@@ -43,14 +68,14 @@ function updateNotificationUI(notifications) {
         li.appendChild(title);
 
         // Body
-        const body = document.createElement('p');
-        body.className = 'notification-body';
-        body.textContent = notification.body;
-        li.appendChild(body);
+        // const body = document.createElement('p');
+        // body.className = 'notification-body';
+        // body.textContent = notification.body;
+        // li.appendChild(body);
 
         // Date and time
         const dateTime = document.createElement('p');
-        dateTime.className = 'notification-date';
+        dateTime.className = 'notification-date poppins-medium';
         const date = new Date(notification.timestamp);
         dateTime.textContent = date.toLocaleString(); // e.g., "8/4/2025, 10:15:00 AM"
         li.appendChild(dateTime);
@@ -59,16 +84,22 @@ function updateNotificationUI(notifications) {
     });
 }
 
+function selectPurpose(purpose) {
+    console.log(purpose);
+    document.querySelector(".main-links").remove();
+    subscribe(currentTeam);
+}
 
-subscribe();
 // Ask permission and subscribe
 
-async function subscribe() {
+async function subscribe(team) {
     const permission = await Notification.requestPermission();
 
     if (permission === 'granted') {
-        const subscribeEle = document.getElementById("subscribe");
-        if (subscribeEle) subscribeEle.remove();
+        // const subscribeEle = document.getElementById("subscribe");
+        // if (subscribeEle) subscribeEle.remove();
+
+
     }
 
     if (permission !== 'granted') {
@@ -84,40 +115,26 @@ async function subscribe() {
         applicationServerKey: applicationServerKey
     });
 
+    const payload = {
+        subscription,
+        team: team
+    };
 
-    // await fetch('https://pwa-notifications-be.onrender.com/subscribe', {
-    await fetch('https://doorapp.ihorizons.org/backend/subscribe', {
+    const response = await fetch(`${baseURL}/subscribe`, {
         method: 'POST',
-        body: JSON.stringify(subscription),
+        body: JSON.stringify(payload),
         headers: {
             'Content-Type': 'application/json'
         }
     });
 
-    console.log('Subscribed!');
-}
+    const res = await response.json();
 
-function pushNotification(title, body) {
-    fetch("https://doorapp.ihorizons.org/backend/sendNotification", {
-    // fetch("https://pwa-notifications-be.onrender.com/sendNotification", {
-        method: "POST",
-        body: JSON.stringify({
-            title: title,
-            body: body,
-        }),
-        headers: {
-            "Content-Type": "application/json",
-        },
-    })
-        .then((response) =>
-            response.ok
-                ? console.log("Notification sent!")
-                : console.log("Failed to send")
-        )
-        .catch((error) => {
-            console.error("Error sending notification:", error);
-            console.log("Error sending notification");
-        });
+    // innerTeam = "khaled";
+    // selectPurpose(innerTeam);
+    // fetchLatestNotifications();
+
+    console.log('Subscribed!', res);
 }
 
 function urlBase64ToUint8Array(base64String) {
