@@ -18,7 +18,7 @@ async function initialize() {
         const subscription = await reg.pushManager.getSubscription();
 
         if (subscription) {
-            console.log("✅ User is already subscribed:", subscription);
+            // console.log("✅ User is already subscribed:", subscription);
 
             const response = await fetch(`${baseURL}/getmysubscribtion`, {
                 method: 'POST',
@@ -29,16 +29,22 @@ async function initialize() {
             });
 
             const res = await response.json();
-            console.log('from the api::');
+            if (res.innerteam) {
+                innerTeam = res.innerteam;
+                document.querySelector(".main-links").remove();
+                fetchLatestNotifications();
+            }
+            // console.log('from the api::');
 
-            console.log(res);
+            // console.log(res);
 
 
             // return true;
-        } else {
-            console.log("❌ User is not subscribed yet");
-            // return false;
         }
+        // else {
+        //     console.log("❌ User is not subscribed yet");
+        //     // return false;
+        // }
 
 
 
@@ -100,14 +106,14 @@ function updateNotificationUI(notifications) {
 }
 
 function selectPurpose(purpose) {
-    console.log(purpose);
+    // console.log(purpose);
     document.querySelector(".main-links").remove();
     subscribe(currentTeam, purpose);
 }
 
 // Ask permission and subscribe
 
-async function subscribe(team, innerteam) {
+async function subscribe(team, innerteamvar) {
     const permission = await Notification.requestPermission();
 
     if (permission === 'granted') {
@@ -133,7 +139,7 @@ async function subscribe(team, innerteam) {
     const payload = {
         subscription,
         team: team,
-        innerteam: innerteam
+        innerteam: innerteamvar
     };
 
     const response = await fetch(`${baseURL}/subscribe`, {
@@ -146,9 +152,9 @@ async function subscribe(team, innerteam) {
 
     const res = await response.json();
 
-    // innerTeam = "khaled";
+    innerTeam = innerteamvar;
     // selectPurpose(innerTeam);
-    // fetchLatestNotifications();
+    fetchLatestNotifications();
 
     console.log('Subscribed!', res);
 }
