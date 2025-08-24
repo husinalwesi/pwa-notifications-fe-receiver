@@ -31,6 +31,15 @@
         role="group"
         aria-label="Purpose selection options"
       >
+        <div style="width: 100%">
+          <button
+            onclick="selectPurpose('all')"
+            class="purpose-card purpose-card-all"
+          >
+            <h3>Subscribe to all</h3>
+          </button>
+        </div>
+
         <!-- Meeting Card -->
         <button
           class="purpose-card"
@@ -80,7 +89,10 @@
         </button>
       </section>
 
-      <ul id="notification-list" class="notification-list hide-js poppins-regular"></ul>
+      <ul
+        id="notification-list"
+        class="notification-list hide-js poppins-regular"
+      ></ul>
       <!-- <ul id="notification-list" class="poppins-regular">
         <li>
           <p class="notification-title poppins-medium">title</p>
