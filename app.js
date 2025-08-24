@@ -65,7 +65,7 @@ async function fetchLatestNotifications() {
         // use this innerTeam
         const response = await fetch(`${baseURL}/notifications?team=${currentTeam}&innerteam=${innerTeam}`); // adjust your endpoint
         const data = await response.json();
-        updateNotificationUI(data); // render to DOM or state
+        if (data.length > 0) updateNotificationUI(data); // render to DOM or state
     } catch (err) {
         console.error('Error fetching notifications:', err);
     }
