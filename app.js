@@ -18,7 +18,7 @@ async function initialize() {
         const subscription = await reg.pushManager.getSubscription();
 
         if (subscription) {
-            // console.log("✅ User is already subscribed:", subscription);
+            console.log("✅ User is already subscribed:", subscription);
 
             const response = await fetch(`${baseURL}/getmysubscribtion`, {
                 method: 'POST',
