@@ -29,10 +29,17 @@ async function initialize() {
             });
 
             const res = await response.json();
-            if (res.innerteam) {
-                innerTeam = res.innerteam;
+            if (res.team === currentTeam) {
+                if (res.innerteam) {
+                    innerTeam = res.innerteam;
+                    document.querySelector(".main-links").remove();
+                    fetchLatestNotifications();
+                    showSelection();
+                }
+            } else {
                 document.querySelector(".main-links").remove();
-                fetchLatestNotifications();
+                document.querySelector(".notification-list").remove();
+                document.querySelector(".errors").classList.add("active");
             }
             // console.log('from the api::');
 
@@ -40,6 +47,8 @@ async function initialize() {
 
 
             // return true;
+        } else {
+            showSelection();
         }
         // else {
         //     console.log("❌ User is not subscribed yet");
@@ -57,6 +66,12 @@ async function initialize() {
         });
 
     }
+}
+
+function showSelection() {
+    document.querySelectorAll(".hide-js").forEach(el => {
+        el.classList.remove("hide-js");
+    });
 }
 
 async function fetchLatestNotifications() {

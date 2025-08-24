@@ -394,3 +394,20 @@ max-height: 44px; width: 100%; height: auto; max-width: 278px
           font-size: 24px;
         }
       }
+      .errors{
+        display: none;
+            color: white;
+    height: 100%;
+    font-weight: bold;
+    text-align: center;
+    font-size: 30px;
+      }
+
+      .errors.active{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .hide-js{
+        display: none;
+      }
