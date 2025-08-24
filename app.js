@@ -10,7 +10,9 @@ initialize();
 async function initialize() {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register(currentTeam === 'peopledynamics' ? 'sw-people.js' : 'sw.js')
-            .then(() => console.log('Service Worker registered'));
+            .then(() => {
+                // console.log('Service Worker registered')
+            });
 
 
         // check if user is already subscribed or not
@@ -81,14 +83,11 @@ async function fetchLatestNotifications() {
         const response = await fetch(`${baseURL}/notifications?team=${currentTeam}&innerteam=${innerTeam}`); // adjust your endpoint
         const data = await response.json();
         if (data.length > 0) updateNotificationUI(data); // render to DOM or state
+        else updateNotificationUIEmpty();
     } catch (err) {
         console.error('Error fetching notifications:', err);
     }
 }
-
-// setTimeout(() => {
-//     updateNotificationUI([{ title: 'title', body: 'test', timestamp: new Date() }]);
-// }, 3000);
 
 function updateNotificationUI(notifications) {
     const list = document.getElementById('notification-list');
@@ -120,6 +119,21 @@ function updateNotificationUI(notifications) {
     });
 }
 
+function updateNotificationUIEmpty() {
+    const list = document.getElementById('notification-list');
+    list.innerHTML = ''; // Clear existing items
+
+    const li = document.createElement('li');
+
+    // Title
+    const title = document.createElement('p');
+    title.className = 'notification-title poppins-medium';
+    title.textContent = 'There is no data!';
+    li.appendChild(title);
+
+    list.appendChild(li);
+}
+
 function selectPurpose(purpose) {
     // console.log(purpose);
     document.querySelector(".main-links").remove();
@@ -139,7 +153,8 @@ async function subscribe(team, innerteamvar) {
     }
 
     if (permission !== 'granted') {
-        return console.log('Notification permission denied');
+        return;
+        // console.log('Notification permission denied');
     }
 
     const swReg = await navigator.serviceWorker.ready;
@@ -171,7 +186,7 @@ async function subscribe(team, innerteamvar) {
     // selectPurpose(innerTeam);
     fetchLatestNotifications();
 
-    console.log('Subscribed!', res);
+    // console.log('Subscribed!', res);
 }
 
 function urlBase64ToUint8Array(base64String) {
